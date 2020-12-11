@@ -12,25 +12,25 @@ export default {
     },
 
     // 新增品牌信息
-    addTrademark(banner) {
+    addTrademark(data) {
         return request({
             method: "POST",
             url: `${api_name}/save`,
-            data: banner
+            data,
         })
     },
 
     // 修改品牌信息
-    updataTrademark(banner) {
+    updataTrademark(data) {
         return request({
             method: "PUT",
-            url: `${api_name}/updata`,
-            data: banner
+            url: `${api_name}/update`,
+            data,
         })
     },
 
     // 删除品牌
-    delTrademark(id) {
+    deleteTrademark(id) {
         return request({
             method: "DELETE",
             url: `${api_name}/remove/${id}`
