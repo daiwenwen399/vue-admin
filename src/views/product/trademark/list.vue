@@ -3,13 +3,13 @@
     <!-- 添加按钮 -->
     <el-button type="primary" icon="el-icon-plus">添加</el-button>
     <!-- 表格 -->
-    <el-table :data="tableData" border style="width: 100%; margin: 20px 0">
-      <el-table-column prop="id" label="序号" width="80" align="center">
+    <el-table :data="records" border style="width: 100%; margin: 20px 0">
+      <el-table-column type="index" label="序号" width="80" align="center">
       </el-table-column>
-      <el-table-column prop="name" label="品牌名称"> </el-table-column>
+      <el-table-column prop="tmName" label="品牌名称"> </el-table-column>
       <el-table-column label="品牌LOGO">
         <template slot-scope="scope">
-          <img :src="scope.row.logo" alt="logo" class="trademark_img" />
+          <img :src="scope.row.logoUrl" alt="logo" class="trademark_img" />
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -22,7 +22,12 @@
     <!-- 分页器 -->
     <el-pagination
       layout="prev, pager, next,jumper,sizes,total"
-      :total="50"
+      :current-page="page"
+      :page-size.sync="limit"
+      :page-sizes="[3, 6, 9]"
+      :total="total"
+      @size-change="getTrademarkList(page, $event)"
+      @current-change="getTrademarkList($event, limit)"
       class="trademark_pagination"
     >
     </el-pagination>
@@ -34,15 +39,26 @@ export default {
   name: "TrademarkList",
   data() {
     return {
-      tableData: [
-        {
-          id: 1,
-          name: "支付宝",
-          logo:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3560973341,161838141&fm=26&gp=0.jpg",
-        },
-      ],
+      records: [], // 所有品牌数据
+      page: 1, // 当前页码
+      limit: 3, // 每页显示条数
+      total: 0, // 总条数
+      pages: 7,
     };
+  },
+  methods: {
+    // 获取品牌数据的方法
+    async getTrademarkList(page, limit) {
+      const result = await this.$API.trademark.getPageList(page, limit);
+      this.records = result.data.records;
+      this.page = result.data.current;
+      this.limit = result.data.size;
+      this.total = result.data.total;
+      this.pages = result.data.pages;
+    },
+  },
+  mounted() {
+    this.getTrademarkList(this.page, this.limit);
   },
 };
 </script>
