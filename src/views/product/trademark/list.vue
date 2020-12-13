@@ -65,12 +65,12 @@
       </el-table-column>
       <el-table-column prop="tmName" label="品牌名称"> </el-table-column>
       <el-table-column label="品牌LOGO">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <img :src="scope.row.logoUrl" alt="logo" class="trademark_img" />
         </template>
       </el-table-column>
       <el-table-column label="操作">
-        <template slot-scope="{ row }">
+        <template v-slot="{ row }">
           <el-button type="warning" icon="el-icon-edit" @click="edit(row)"
             >修改</el-button
           >
