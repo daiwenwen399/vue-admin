@@ -1,5 +1,5 @@
 <template>
-  <div><CategorySelector @getList="getSpuList" /><SpuList /></div>
+  <div><CategorySelector /><SpuList /></div>
 </template>
 
 <script>
@@ -8,11 +8,7 @@ import SpuList from "./spuList";
 
 export default {
   name: "Spu",
-  methods: {
-    getSpuList({ category3Id }) {
-      this.$API.spu.getSpuPageList(category3Id,);
-    },
-  },
+  methods: {},
   components: {
     CategorySelector,
     SpuList,

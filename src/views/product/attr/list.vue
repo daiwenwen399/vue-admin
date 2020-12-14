@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CategorySelector @getList="getAttrList" :disabled="isAddTableShow" />
+    <CategorySelector :disabled="isAddTableShow" />
     <!-- 展示属性区域 -->
     <el-card v-show="!isAddTableShow">
       <el-button
@@ -206,6 +206,13 @@ export default {
   },
   components: {
     CategorySelector,
+  },
+  mounted() {
+    this.$bus.$on("getList", this.getAttrList);
+  },
+  // 绑定全局事件总线，在组件卸载时要清除掉
+  beforeDestroy() {
+    this.$bus.$off("getList", this.getAttrList);
   },
 };
 </script>

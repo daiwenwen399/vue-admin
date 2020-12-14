@@ -92,7 +92,7 @@ export default {
     },
     // 点击三级分类时，要触发父组件获取属性信息的方法
     getAttrList() {
-      this.$emit("getList", this.attrList);
+      this.$bus.$emit("getList", this.attrList);
     },
   },
   mounted() {
