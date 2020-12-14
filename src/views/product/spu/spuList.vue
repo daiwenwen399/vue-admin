@@ -21,10 +21,18 @@
       <el-table-column prop="description" label="SPU描述"> </el-table-column>
       <el-table-column label="操作">
         <template>
-          <el-button type="primary" icon="el-icon-plus"></el-button>
-          <el-button type="primary" icon="el-icon-edit"></el-button>
-          <el-button type="info" icon="el-icon-info"></el-button>
-          <el-button type="danger" icon="el-icon-delete"></el-button>
+          <el-button type="primary" icon="el-icon-plus" size="mini"></el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-edit"
+            size="mini "
+          ></el-button>
+          <el-button type="info" icon="el-icon-info" size="mini "></el-button>
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            size="mini"
+          ></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -72,6 +80,14 @@ export default {
       const { page, limit } = this;
       this.getSpuPageList(page, limit);
     },
+    // 三级列表变化时触发，清空列表数据
+    clearSpuList() {
+      this.spuList = [];
+      this.attrList.category3Id = "";
+      this.page = 1;
+      this.limit = 3;
+      this.total = 0;
+    },
     // 获取分页数据
     async getSpuPageList(page, limit) {
       const { category3Id } = this.attrList;
@@ -93,9 +109,11 @@ export default {
   },
   mounted() {
     this.$bus.$on("getList", this.getSpuList);
+    this.$bus.$on("clearList", this.clearSpuList);
   },
   beforeDestroy() {
     this.$bus.$off("getList", this.getSpuList);
+    this.$bus.$off("clearList", this.clearSpuList);
   },
 };
 </script>

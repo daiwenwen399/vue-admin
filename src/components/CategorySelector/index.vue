@@ -76,6 +76,8 @@ export default {
       if (index >= 2) {
         this.attrList.category3Id = "";
         this.category3List = [];
+        // 也要清空列表里的数据
+        this.$bus.$emit("clearList");
       }
       // 如果点击的是一级列表，二级列表也要清空
       if (index === 2) {

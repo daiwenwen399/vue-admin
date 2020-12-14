@@ -202,17 +202,23 @@ export default {
       }
       this.isLoading = false;
     },
-    // 增加新的属性
+    // 清空列表数据
+    clearSpuList() {
+      this.attrList = {};
+      this.attrInfoList = [];
+    },
   },
   components: {
     CategorySelector,
   },
   mounted() {
     this.$bus.$on("getList", this.getAttrList);
+    this.$bus.$on("clearList", this.clearSpuList);
   },
   // 绑定全局事件总线，在组件卸载时要清除掉
   beforeDestroy() {
     this.$bus.$off("getList", this.getAttrList);
+    this.$bus.$off("clearList", this.clearSpuList);
   },
 };
 </script>
