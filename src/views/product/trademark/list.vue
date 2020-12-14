@@ -261,10 +261,7 @@ export default {
 <style lang="sass">
 .trademark_img
   width: 100px
-.trademark_pagination
-  text-align: center
-.el-pagination__sizes
-  margin-left: 20px
+
 // 上传框
 .avatar-uploader .el-upload
   border: 1px dashed #d9d9d9
