@@ -22,12 +22,8 @@
       <el-table-column label="操作">
         <template>
           <el-button type="primary" icon="el-icon-plus" size="mini"></el-button>
-          <el-button
-            type="primary"
-            icon="el-icon-edit"
-            size="mini "
-          ></el-button>
-          <el-button type="info" icon="el-icon-info" size="mini "></el-button>
+          <el-button type="primary" icon="el-icon-edit" size="mini"></el-button>
+          <el-button type="info" icon="el-icon-info" size="mini"></el-button>
           <el-button
             type="danger"
             icon="el-icon-delete"
@@ -38,16 +34,10 @@
     </el-table>
 
     <!-- 分页器 -->
-    <!-- <el-pagination
-          :page-size.sync="limit"
-
-      @size-change="getTrademarkList(page, $event)"
-      @current-change="getTrademarkList($event, limit)"
-    > -->
     <el-pagination
       layout="prev, pager, next,jumper,sizes,total"
       :current-page="page"
-      :page-size="limit"
+      :page-size.sync="limit"
       :page-sizes="[3, 6, 9]"
       :total="total"
       @size-change="getSpuPageList(page, $event)"
@@ -90,6 +80,7 @@ export default {
     },
     // 获取分页数据
     async getSpuPageList(page, limit) {
+      this.loading = true;
       const { category3Id } = this.attrList;
       const result = await this.$API.spu.getSpuPageList({
         category3Id,
@@ -105,6 +96,7 @@ export default {
       } else {
         this.$message.error("获取分页列表失败");
       }
+      this.loading = false;
     },
   },
   mounted() {
