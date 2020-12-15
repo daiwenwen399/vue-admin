@@ -96,24 +96,25 @@
                 v-model="saleAttrValue"
                 ref="input"
                 autofocus
-                @blur="switchButton(row)"
-                @keyup.enter.native="switchButton(row)"
+                @blur="toButton(row)"
+                @keyup.enter.native="toButton(row)"
               ></el-input>
               <el-button
                 v-else
                 icon="el-icon-plus"
                 size="mini"
-                @click="addAttrValue(row)"
+                @click="toEdit(row)"
                 >添加</el-button
               >
             </template>
           </el-table-column>
           <el-table-column label="操作" width="150">
-            <template>
+            <template v-slot="{ row }">
               <el-button
                 type="danger"
                 icon="el-icon-delete"
                 size="mini"
+                @click="delSaleAttr(row)"
               ></el-button>
             </template>
           </el-table-column>
@@ -135,12 +136,18 @@ export default {
         spuName: [
           { required: true, message: "请输入SPU名称", trigger: "blur" },
         ],
-        spuId: [{ required: true, message: "请选择品牌", trigger: "blur" }],
+        spuId: [{ required: true, message: "请选择品牌" }],
         description: [
           { required: true, message: "请输入SPU描述", trigger: "blur" },
         ],
-        spuImg: [{ validate: this.spuImgValidate, required: true }],
-        spuSale: [{ validate: this.spuSaleValidate }],
+        spuImg: [{ validator: this.spuImgValidator, required: true }],
+        spuSale: [
+          {
+            validator: this.spuSaleValidator,
+            required: true,
+            trigger: "submit",
+          },
+        ],
       },
       spu: this.rowItem,
       spuList: [],
@@ -249,7 +256,7 @@ export default {
       console.log(file, fileList);
     },
     // 图片自定义校验规则
-    spuImgValidate(rule, value, callback) {
+    spuImgValidator(rule, value, callback) {
       if (this.imgList.length) {
         callback();
         return;
@@ -257,12 +264,17 @@ export default {
       callback(new Error("至少上传一张图片"));
     },
     // 销售列表自定义校验规则
-    spuSaleValidate(rule, value, callback) {
+    spuSaleValidator(rule, value, callback) {
       if (this.spuSaleAttrList.length === 0) {
         callback(new Error("至少选择一个销售属性"));
+        return;
       }
-      if (this.spuSaleAttrList.spuSaleAttrValueList.length === 0) {
+      const isNot = this.spuSaleAttrList.some(
+        (sale) => sale.spuSaleAttrValueList.length === 0
+      );
+      if (isNot) {
         callback(new Error("每个销售属性必须有一个属性值"));
+        return;
       }
       callback();
     },
@@ -271,7 +283,7 @@ export default {
       row.spuSaleAttrValueList.splice(index, 1);
     },
     // 添加一个属性值，进入编辑模式
-    addAttrValue(row) {
+    toEdit(row) {
       this.$set(row, "edit", true);
       // 让input聚焦
       this.$nextTick(() => {
@@ -279,20 +291,40 @@ export default {
       });
     },
     // 退出编辑模式
-    switchButton(row) {
-      if (this.saleAttrValue) {
+    toButton(row) {
+      // 如果去空格后不为空，再数组后添加
+      if (this.saleAttrValue.trim() !== "") {
         row.spuSaleAttrValueList.push({
           baseSaleAttrId: row.baseSaleAttrId,
           spuId: row.spuId,
           saleAttrName: row.saleAttrName,
           saleAttrValueName: this.saleAttrValue,
         });
-        this.saleAttrValue = "";
-        row.edit = false;
       }
+      // 如果去空格后为空，直接退出编辑模式
+      this.saleAttrValue = "";
+      row.edit = false;
+    },
+    // 删除一行销售属性
+    delSaleAttr(row) {
+      this.spuSaleAttrList = this.spuSaleAttrList.filter((sale) => {
+        return row.baseSaleAttrId !== sale.baseSaleAttrId;
+      });
     },
     // 添加销售属性
-    addSaleAttr() {},
+    addSaleAttr() {
+      const { id, sale } = this.spu; //2257,2
+      const newsale = this.baseSaleAttrList.find(
+        (saleAttr) => saleAttr.id === sale
+      );
+      this.spuSaleAttrList.push({
+        baseSaleAttrId: newsale.id,
+        saleAttrName: newsale.name,
+        spuId: id,
+        spuSaleAttrValueList: [],
+      });
+      this.spu.sale = "";
+    },
   },
   mounted() {
     this.getTrademarkList();

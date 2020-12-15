@@ -69,19 +69,19 @@
         <el-table-column type="index" label="序号" width="80" align="center">
         </el-table-column>
         <el-table-column label="属性值名称">
-          <template v-slot="{ row, $index }">
+          <template v-slot="{ row }">
             <el-input
               size="mini"
               ref="input"
               v-if="row.edit"
               v-model="row.valueName"
               autofocus
-              @blur="switchSpan(row, $index)"
-              @keyup.enter.native="switchSpan(row, $index)"
+              @blur="toSpan(row)"
+              @keyup.enter.native="toSpan(row)"
             ></el-input>
             <span
               v-else
-              @click="switchInput(row)"
+              @click="toEdit(row)"
               style="display: block; width: 100%"
               >{{ row.valueName }}</span
             >
@@ -161,7 +161,7 @@ export default {
       this.attr.id = "";
     },
     // 切换span变成input
-    switchInput(row) {
+    toEdit(row) {
       this.$set(row, "edit", true);
       // 让input聚焦
       this.$nextTick(() => {
@@ -169,12 +169,8 @@ export default {
       });
     },
     // 切换input变成span
-    switchSpan(row, index) {
-      const valueName = row.valueName.trim();
-      if (!valueName) {
-        this.delOneValue(index);
-        return;
-      }
+    toSpan(row) {
+      if (row.valueName.trim() === "") return;
       row.edit = false;
     },
     // 点击添加属性值按钮
