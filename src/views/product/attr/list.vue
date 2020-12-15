@@ -77,7 +77,7 @@
               v-model="row.valueName"
               autofocus
               @blur="switchSpan(row, $index)"
-              @keyup.enter.native="row.edit = false"
+              @keyup.enter.native="switchSpan(row, $index)"
             ></el-input>
             <span
               v-else

@@ -46,11 +46,35 @@ export default {
         })
     },
 
-    // 获取SPU销售属性列表
+    // 获取所有品牌数据
+    getTrademarkList() {
+        return request({
+            method: "GET",
+            url: `${api_name}/baseTrademark/getTrademarkList`
+        })
+    },
+
+    // 获取spu图片
+    getSpuImageList(spuId) {
+        return request({
+            method: "GET",
+            url: `${api_name}/spuImageList/${spuId}`
+        })
+    },
+
+    // 获取所有销售属性列表
     getBaseSaleAttrList() {
         return request({
             method: "GET",
             url: `${api_name}/baseSaleAttrList`
+        })
+    },
+
+    // 获取spu销售属性列表
+    getSpuSaleAttrList(spuId) {
+        return request({
+            method: "GET",
+            url: `${api_name}/spuSaleAttrList/${spuId}`
         })
     },
 }

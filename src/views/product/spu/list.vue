@@ -1,5 +1,9 @@
 <template>
-  <div><CategorySelector /><SpuList /><UpdateSpu /></div>
+  <div>
+    <CategorySelector />
+    <SpuList v-if="isSpuShow" @showUpdateList="showUpdateList" />
+    <UpdateSpu v-else @showSpuList="showSpuList" :rowItem="rowItem" />
+  </div>
 </template>
 
 <script>
@@ -9,7 +13,21 @@ import UpdateSpu from "./updateSpu";
 
 export default {
   name: "Spu",
-  methods: {},
+  data() {
+    return {
+      isSpuShow: true,
+      rowItem: {},
+    };
+  },
+  methods: {
+    showUpdateList(row) {
+      this.isSpuShow = false;
+      this.rowItem = { ...row };
+    },
+    showSpuList() {
+      this.isSpuShow = true;
+    },
+  },
   components: {
     CategorySelector,
     SpuList,
