@@ -23,18 +23,20 @@ export default {
     },
 
     // 保存SPU信息
-    saveSpuInfo() {
+    saveSpuInfo(spu) {
         return request({
             method: "POST",
-            url: `${api_name}/saveSpuInfo`
+            url: `${api_name}/saveSpuInfo`,
+            data: spu,
         })
     },
 
     // 更改SPU信息
-    updateSpuInfo() {
+    updateSpuInfo(spu) {
         return request({
             method: "POST",
-            url: `${api_name}/updateSpuInfo`
+            url: `${api_name}/updateSpuInfo`,
+            data: spu,
         })
     },
 

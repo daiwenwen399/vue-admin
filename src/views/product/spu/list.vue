@@ -24,8 +24,11 @@ export default {
       this.isSpuShow = false;
       this.rowItem = { ...row };
     },
-    showSpuList() {
+    showSpuList(category3Id) {
       this.isSpuShow = true;
+      this.$nextTick(() => {
+        this.$bus.$emit("getList", { category3Id });
+      });
     },
   },
   components: {

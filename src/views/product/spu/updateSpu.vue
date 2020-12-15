@@ -119,8 +119,10 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-button type="primary">保存</el-button>
-        <el-button @click="$emit('showSpuList')">取消</el-button>
+        <el-button type="primary" @click="updateSpu">保存</el-button>
+        <el-button @click="$emit('showSpuList', spu.category3Id)"
+          >取消</el-button
+        >
       </el-form-item>
     </el-form>
   </el-card>
@@ -324,6 +326,30 @@ export default {
         spuSaleAttrValueList: [],
       });
       this.spu.sale = "";
+    },
+    // 更新spu信息
+    updateSpu() {
+      this.$refs.spu.validate(async (valid) => {
+        // 校验通过
+        if (valid) {
+          // 收集信息
+          const info = {
+            ...this.spu,
+            spuImageList: this.imgUrlList,
+            spuSaleAttrList: this.spuSaleAttrList,
+          };
+
+          // 发送请求
+          const result = await this.$API.spu.updateSpuInfo(info);
+          if (result.code === 200) {
+            this.$message.success("保存成功");
+            // 回到之前的页面
+            this.$emit("showSpuList", this.spu.category3Id);
+          } else {
+            this.$message.error("保存失败");
+          }
+        }
+      });
     },
   },
   mounted() {
