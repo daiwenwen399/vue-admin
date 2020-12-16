@@ -22,7 +22,12 @@
       <el-table-column prop="description" label="SPU描述"> </el-table-column>
       <el-table-column label="操作">
         <template v-slot="{ row }">
-          <el-button type="primary" icon="el-icon-plus" size="mini"></el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-plus"
+            size="mini"
+            @click="$emit('showSkuList', { ...row, ...attrList })"
+          ></el-button>
           <el-button
             type="primary"
             icon="el-icon-edit"
@@ -63,6 +68,8 @@ export default {
       limit: 3,
       total: 0,
       attrList: {
+        category1Id: "",
+        category2Id: "",
         category3Id: "",
       },
       spuList: [],
@@ -71,8 +78,8 @@ export default {
   },
   methods: {
     // 三级分类列表改变触发的函数
-    getSpuList({ category3Id }) {
-      this.attrList.category3Id = category3Id;
+    getSpuList(attrList) {
+      this.attrList = attrList;
       const { page, limit } = this;
       this.getSpuPageList(page, limit);
     },
