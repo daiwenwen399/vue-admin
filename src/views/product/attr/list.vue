@@ -38,11 +38,17 @@
               size="mini"
               @click="edit(row)"
             ></el-button>
-            <el-button
-              type="danger"
-              icon="el-icon-delete"
-              size="mini"
-            ></el-button>
+            <el-popconfirm
+              :title="`确定删除${row.valueName}吗？`"
+              @onConfirm="delValue(row)"
+            >
+              <el-button
+                slot="reference"
+                type="danger"
+                icon="el-icon-delete"
+                size="mini"
+              ></el-button>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -188,6 +194,15 @@ export default {
     // 保存修改的属性值
     async saveAttrList() {
       this.isLoading = true;
+      // 判断是添加新属性还是修改
+      const isAdd = this.attr.id;
+      if (!isAdd) {
+        // 是添加新属性
+        // this.attr里面只有attrName和attrValueList，还需要categoryId和categoryLevel
+        this.attr.categoryId = this.attrList.category3Id;
+        this.attr.categoryLevel = 3;
+      }
+      // 修改
       const result = await this.$API.attr.saveAttrInfo(this.attr);
       if (result.code === 200) {
         this.$message.success("保存成功");
@@ -202,6 +217,16 @@ export default {
     clearSpuList() {
       this.attrList = {};
       this.attrInfoList = [];
+    },
+    // 删除一行属性
+    async delValue(row) {
+      const result = await this.$API.attr.deleteAttr(row.id);
+      if (result.code === 200) {
+        this.$message.success("删除成功");
+        this.getAttrList(this.attrList);
+      } else {
+        this.$message.error("删除失败");
+      }
     },
   },
   components: {

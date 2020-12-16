@@ -5,7 +5,7 @@
       type="primary"
       icon="el-icon-plus"
       :disabled="!attrList.category3Id"
-      @click="$emit('showUpdateList')"
+      @click="$emit('showUpdateList', { category3Id: attrList.category3Id })"
       >添加SPU</el-button
     >
 

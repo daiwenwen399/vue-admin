@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CategorySelector />
+    <CategorySelector :disabled="!isSpuShow" />
     <SpuList v-if="isSpuShow" @showUpdateList="showUpdateList" />
     <UpdateSpu v-else @showSpuList="showSpuList" :rowItem="rowItem" />
   </div>

@@ -340,7 +340,13 @@ export default {
           };
 
           // 发送请求
-          const result = await this.$API.spu.updateSpuInfo(info);
+          let result;
+          if (this.spu.id) {
+            result = await this.$API.spu.updateSpuInfo(info);
+          } else {
+            result = await this.$API.spu.saveSpuInfo(info);
+          }
+
           if (result.code === 200) {
             this.$message.success("保存成功");
             // 回到之前的页面
@@ -354,9 +360,11 @@ export default {
   },
   mounted() {
     this.getTrademarkList();
-    this.getImageList();
     this.getBaseSaleAttrList();
-    this.getSpuSaleAttrList();
+    if (this.spu.id) {
+      this.getSpuSaleAttrList();
+      this.getImageList();
+    }
   },
 };
 </script>
