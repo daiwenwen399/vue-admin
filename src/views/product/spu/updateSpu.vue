@@ -120,7 +120,14 @@
           </el-table-column>
         </el-table>
         <el-button type="primary" @click="updateSpu">保存</el-button>
-        <el-button @click="$emit('showSpuList', spu.category3Id)"
+        <el-button
+          @click="
+            $emit('showSpuList', {
+              category1Id: spu.category1Id,
+              category2Id: spu.category2Id,
+              category3Id: spu.category3Id,
+            })
+          "
           >取消</el-button
         >
       </el-form-item>
@@ -350,7 +357,11 @@ export default {
           if (result.code === 200) {
             this.$message.success("保存成功");
             // 回到之前的页面
-            this.$emit("showSpuList", this.spu.category3Id);
+            this.$emit("showSpuList", {
+              category1Id: this.spu.category1Id,
+              category2Id: this.spu.category2Id,
+              category3Id: this.spu.category3Id,
+            });
           } else {
             this.$message.error("保存失败");
           }

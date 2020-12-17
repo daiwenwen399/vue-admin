@@ -30,17 +30,6 @@ export default {
       spuItem: {},
     };
   },
-  /*  addSku(row) {
-      console.log(row);
-      category3Id: 236
-          description: "萨达"
-          id: 2414
-          spuImageList: null
-          spuName: "安安"
-          spuSaleAttrList: null
-          tmId: null 
-    }, */
-
   methods: {
     // 进入修改spu页面
     showUpdateList(row) {
@@ -48,16 +37,20 @@ export default {
       this.rowItem = { ...row };
     },
     // 保存或取消修改的spu
-    showSpuList(category3Id) {
+    showSpuList(category) {
       this.isSpuShow = true;
       this.$nextTick(() => {
-        this.$bus.$emit("getList", { category3Id });
+        this.$bus.$emit("getList", category);
       });
     },
     // 进入增加sku
     showSkuList(row) {
       this.isSkuShow = true;
       this.spuItem = { ...row };
+    },
+    // 保存或取消增加sku
+    skuToSpuList() {
+      this.isSkuShow = false;
     },
   },
   components: {
