@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AddSku v-if="isSkuShow" :spuItem="spuItem" />
+    <AddSku v-if="isSkuShow" :spuItem="spuItem" @skuToSpuList="skuToSpuList" />
 
     <div v-else>
       <CategorySelector :disabled="!isSpuShow" />
@@ -49,8 +49,11 @@ export default {
       this.spuItem = { ...row };
     },
     // 保存或取消增加sku
-    skuToSpuList() {
+    skuToSpuList(category) {
       this.isSkuShow = false;
+      this.$nextTick(() => {
+        this.$bus.$emit("getList", category);
+      });
     },
   },
   components: {
